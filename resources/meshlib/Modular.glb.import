@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cr40rv0ptnm7t"
-path="res://.godot/imported/Modular.glb-3688797b7936f6db39310e3d5e40b0f6.scn"
+uid="uid://ym1nafbt0ai7"
+path="res://.godot/imported/modular.glb-72512a2c1619398c5c9d9270aca5fcfc.scn"
 
 [deps]
 
-source_file="res://resources/meshlib/Modular.glb"
-dest_files=["res://.godot/imported/Modular.glb-3688797b7936f6db39310e3d5e40b0f6.scn"]
+source_file="res://resources/meshlib/modular.glb"
+dest_files=["res://.godot/imported/modular.glb-72512a2c1619398c5c9d9270aca5fcfc.scn"]
 
 [params]
 
