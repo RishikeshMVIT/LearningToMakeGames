@@ -1,6 +1,4 @@
-# Godot 4+ specific ignores
-Godot/.godot/
-Godot/import/
+
 
 # This .gitignore file should be placed at the root of your Unity project directory
 #
@@ -13,6 +11,8 @@ Godot/import/
 /[Bb]uilds/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
+
+Assets/Imports/
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
