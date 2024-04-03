@@ -6,7 +6,9 @@ TheiaAppEntryPoint
 	
 	Theia::Game::SetGameUpdate([&](float delta)
 	{
-
+			wchar_t charBuffer[256];
+			swprintf(charBuffer, 256, L"delta: %f\n", delta);
+			OutputDebugString(charBuffer);
 	}
 	);
 

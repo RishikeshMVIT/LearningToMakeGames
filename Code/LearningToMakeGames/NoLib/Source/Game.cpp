@@ -86,6 +86,15 @@ namespace Theia
 
 			while (isRunning)
 			{
+				LARGE_INTEGER currentCounter;
+				QueryPerformanceCounter(&currentCounter);
+
+				int64_t counterElapsed = currentCounter.QuadPart - lastCounter.QuadPart;
+
+				float delta = (float)counterElapsed / (float)cpuFrequency.QuadPart;
+
+				lastCounter = currentCounter;
+
 				MSG msg;
 				while (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
 				{
@@ -96,7 +105,7 @@ namespace Theia
 					DispatchMessage(&msg);
 				}
 
-				GetInstance().Update(0.0f);
+				GetInstance().Update(delta);
 			}
 		}
 		else
