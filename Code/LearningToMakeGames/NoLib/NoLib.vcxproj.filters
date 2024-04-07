@@ -13,6 +13,24 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Application">
+      <UniqueIdentifier>{671d51d3-50ed-4d03-ba8e-73120bfef279}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Platform">
+      <UniqueIdentifier>{5b9d7b77-16d5-4568-82dc-1a7d7a2389b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities">
+      <UniqueIdentifier>{5e0fc3cb-6e3c-4a19-af29-55b16793c400}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Platform\Win32">
+      <UniqueIdentifier>{40a8b37a-718d-442f-82fb-a31ab29ddaf6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics">
+      <UniqueIdentifier>{22fa2dee-5816-4261-8344-363a5c38cb3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics\Vulkan">
+      <UniqueIdentifier>{997de63b-2303-44c5-82ba-dadd17d6c943}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -21,12 +39,18 @@
     <ClCompile Include="Source\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="IApplication.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Theia.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IApplication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

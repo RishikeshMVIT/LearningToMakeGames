@@ -13,10 +13,126 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Graphics">
+      <UniqueIdentifier>{1ea63566-7f3e-405c-baac-d11f2ea1faa8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Platform">
+      <UniqueIdentifier>{00fdf6ee-2ccb-4838-89a7-b12192eac31a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility">
+      <UniqueIdentifier>{f3379e98-50df-4b30-bbd1-8659b02ec9b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Math">
+      <UniqueIdentifier>{cc0e5ba4-efeb-4af6-b928-3e689a2dac2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Time">
+      <UniqueIdentifier>{db8ad442-7e25-41cd-916c-beeefc69ada3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Logging">
+      <UniqueIdentifier>{7e087ecd-7594-41c1-934c-d374e3b09dd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics\Vulkan">
+      <UniqueIdentifier>{c6494458-2d34-4976-96d5-e2a9028a8e33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Physics">
+      <UniqueIdentifier>{eb3c41b1-51af-4dcc-8056-4618aa8c0072}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Core">
+      <UniqueIdentifier>{b948372e-40ba-419c-b3ba-28ea6f199e21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Physics\PhysX">
+      <UniqueIdentifier>{4556dd98-c67b-4063-bc85-f9e77cce1109}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Core">
+      <UniqueIdentifier>{5cc023ad-dd9b-4011-a3e2-7c1e310222ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics">
+      <UniqueIdentifier>{dd4572d0-7fe0-4248-9788-e719f1b86414}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Physics">
+      <UniqueIdentifier>{1a9e0dc6-b475-4112-9f70-168c530fb9e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utility">
+      <UniqueIdentifier>{ee78221a-4365-4659-8b96-127562432cf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Platform">
+      <UniqueIdentifier>{c21554d8-bff5-4fd6-9aac-b8a8f45cd3ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Physics\PhysX">
+      <UniqueIdentifier>{b28ff2a8-ec08-439a-aeb9-a5763ac9737e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utility\Math">
+      <UniqueIdentifier>{bc920004-29d4-42dc-9599-4f5ada6161f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utility\Logging">
+      <UniqueIdentifier>{ed3d4374-2244-4241-90cb-67a17633be36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utility\Time">
+      <UniqueIdentifier>{3e8170af-de86-459c-865b-080baf355e3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utility\DataStructures">
+      <UniqueIdentifier>{fbb61df5-9c38-4b1d-a9c9-be6f4eb424f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utility\Algorithms">
+      <UniqueIdentifier>{3a96b4b6-f2ec-4703-8cc3-59aa9a4da677}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics\Vulkan">
+      <UniqueIdentifier>{ea17bc3b-d53b-4312-8f79-a71863373322}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\DataStructures">
+      <UniqueIdentifier>{20a884cd-cb17-44ff-bbea-ad361d591199}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Algorithms">
+      <UniqueIdentifier>{10a0f6a9-3070-4a1d-9450-7d0490b6620c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utility\Files">
+      <UniqueIdentifier>{805508e4-8044-4578-b85a-c5aef5cdcbbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Files">
+      <UniqueIdentifier>{ed56a7e9-cb50-4da9-948c-e88befb417c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TheiaWindow.cpp">
+      <Filter>Source Files\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsEngine.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="IApplication.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsEngine.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix.cpp">
+      <Filter>Source Files\Utility\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector3.cpp">
+      <Filter>Source Files\Utility\Math</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GraphicsEngine.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="IApplication.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.h">
+      <Filter>Header Files\Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3.h">
+      <Filter>Header Files\Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsEngine.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="TheiaWindow.h">
+      <Filter>Header Files\Platform</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

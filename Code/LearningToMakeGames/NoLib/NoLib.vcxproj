@@ -127,10 +127,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="IApplication.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="IApplication.h" />
     <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\Theia.h" />
   </ItemGroup>
