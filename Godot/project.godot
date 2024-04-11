@@ -13,7 +13,6 @@ config_version=5
 config/name="Learning To Make Games"
 config/features=PackedStringArray("4.2", "Forward Plus")
 boot_splash/bg_color=Color(0.0235294, 0.0235294, 0.0235294, 1)
-config/icon="res://icon.svg"
 
 [audio]
 
@@ -25,26 +24,12 @@ GameManager="*res://autoloads/managers/game/game_manager.gd"
 
 [display]
 
-window/size/viewport_width=768
-window/size/viewport_height=432
+window/size/viewport_width=960
+window/size/viewport_height=540
 window/size/window_width_override=960
 window/size/window_height_override=540
 window/stretch/mode="viewport"
 window/vsync/vsync_mode=0
-
-[file_customization]
-
-folder_colors={
-"res://addons/": "gray",
-"res://autoloads/": "red",
-"res://components/": "orange",
-"res://editor/": "yellow",
-"res://import/": "green",
-"res://player/": "teal",
-"res://prefabs/": "blue",
-"res://resources/": "purple",
-"res://scenes/": "pink"
-}
 
 [filesystem]
 
