@@ -1,0 +1,92 @@
+[gd_scene load_steps=12 format=3 uid="uid://bl74i4vqyxole"]
+
+[ext_resource type="Material" uid="uid://b0500fk7idonx" path="res://resources/materials/debug_dark.material" id="1_6ct46"]
+[ext_resource type="Script" path="res://case_studies/CharacterControllers/PlayerController.gd" id="2_dd6y0"]
+[ext_resource type="PackedScene" uid="uid://duh3575okhvg3" path="res://resources/prefabs/debugbox01_001.scn" id="2_mqlx7"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_w3u30"]
+sky_top_color = Color(0.372549, 0.698039, 0.886275, 1)
+sky_horizon_color = Color(0.498039, 0.615686, 0.709804, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_ifqm3"]
+sky_material = SubResource("ProceduralSkyMaterial_w3u30")
+
+[sub_resource type="Environment" id="Environment_r7q8s"]
+background_mode = 2
+sky = SubResource("Sky_ifqm3")
+ambient_light_source = 3
+reflected_light_source = 2
+tonemap_mode = 3
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_pkyit"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pcnqf"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_7gwaw"]
+radial_segments = 24
+
+[sub_resource type="BoxMesh" id="BoxMesh_6o6bm"]
+material = ExtResource("1_6ct46")
+size = Vector3(100, 1, 100)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_mg7na"]
+data = PackedVector3Array(-50, 0.5, 50, 50, 0.5, 50, -50, -0.5, 50, 50, 0.5, 50, 50, -0.5, 50, -50, -0.5, 50, 50, 0.5, -50, -50, 0.5, -50, 50, -0.5, -50, -50, 0.5, -50, -50, -0.5, -50, 50, -0.5, -50, 50, 0.5, 50, 50, 0.5, -50, 50, -0.5, 50, 50, 0.5, -50, 50, -0.5, -50, 50, -0.5, 50, -50, 0.5, -50, -50, 0.5, 50, -50, -0.5, -50, -50, 0.5, 50, -50, -0.5, 50, -50, -0.5, -50, 50, 0.5, 50, -50, 0.5, 50, 50, 0.5, -50, -50, 0.5, 50, -50, 0.5, -50, 50, 0.5, -50, -50, -0.5, 50, 50, -0.5, 50, -50, -0.5, -50, 50, -0.5, 50, 50, -0.5, -50, -50, -0.5, -50)
+
+[node name="World" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 10, 0)
+shadow_enabled = true
+directional_shadow_mode = 0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_r7q8s")
+camera_attributes = SubResource("CameraAttributesPractical_pkyit")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+script = ExtResource("2_dd6y0")
+mouse_sensitivity = 1.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_pcnqf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_7gwaw")
+
+[node name="HeadJoint" type="Node3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Player/HeadJoint"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.6)
+fov = 77.0
+near = 0.1
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="Player"]
+transform = Transform3D(1, 0, -1.98419e-09, 0, 1, 0, 1.98419e-09, 0, 1, 0, 1.5, 0)
+update_mode = 1
+
+[node name="Static" type="Node3D" parent="."]
+
+[node name="DebugBox01_001" parent="Static" instance=ExtResource("2_mqlx7")]
+
+[node name="DebugBox01_002" parent="Static" instance=ExtResource("2_mqlx7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.45785, 0.999996, -17.5662)
+
+[node name="DebugBox01_003" parent="Static" instance=ExtResource("2_mqlx7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.948, 0.999996, 11.5466)
+
+[node name="DebugBox01_004" parent="Static" instance=ExtResource("2_mqlx7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.2603, 0.999996, -9.01644)
+
+[node name="Floor" type="StaticBody3D" parent="Static"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
+[node name="MeshInstance" type="MeshInstance3D" parent="Static/Floor"]
+mesh = SubResource("BoxMesh_6o6bm")
+skeleton = NodePath("../../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Static/Floor"]
+shape = SubResource("ConcavePolygonShape3D_mg7na")
