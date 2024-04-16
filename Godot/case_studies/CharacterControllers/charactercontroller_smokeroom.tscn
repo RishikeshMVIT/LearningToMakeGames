@@ -61,8 +61,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 
 [node name="Camera3D" type="Camera3D" parent="Player/HeadJoint"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.6)
+current = true
 fov = 77.0
 near = 0.1
+far = 1000.0
 
 [node name="ReflectionProbe" type="ReflectionProbe" parent="Player"]
 transform = Transform3D(1, 0, -1.98419e-09, 0, 1, 0, 1.98419e-09, 0, 1, 0, 1.5, 0)
