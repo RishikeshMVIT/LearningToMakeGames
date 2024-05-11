@@ -118,6 +118,9 @@ char* BumpAlloc(BumpAllocator* allocator, size_t size)
     return result;
 }
 
+namespace File
+{
+
 long long GetTimeStamp(char* file)
 {
     struct stat fileStat = {};
@@ -163,4 +166,88 @@ char* ReadFile(char* filePath, int* fileSize, char* buffer)
 
     *fileSize = 0;
     auto file = fopen(filePath, "rb");
+    if (!file)
+    {
+        CE_ERROR("Failed to open file: %s", filePath);
+        return nullptr;
+    }
+
+    fseek(file, 0, SEEK_END);
+    *fileSize = ftell(file);
+    fseek(file, 0, SEEK_SET);
+
+    memset(buffer, 0, *fileSize + 1);
+    fread(buffer, sizeof(char), *fileSize, file);
+
+    fclose(file);
+
+    return buffer;
+}
+
+char* ReadFile(char* filePath, int* fileSize, BumpAllocator* allocator)
+{
+    char* file = nullptr;
+    long size = GetFileSize(filePath);
+
+    if (size)
+    {
+        char * buffer = BumpAlloc(allocator, size + 1);
+        file = ReadFile(filePath, fileSize, buffer);
+    }
+
+    return file;
+}
+
+void WriteFile(char* filePath, char* buffer, int size)
+{
+    CE_ASSERT(filePath, "No file path");
+    CE_ASSERT(buffer, "No buffer");
+
+    auto file = fopen(filePath, "wb");
+    if (!file)
+    {
+        CE_ERROR("Faield to open file: %s", filePath);
+        return;
+    }
+
+    fwrite(buffer, sizeof(char), size, file);
+    fclose(file);
+}
+
+bool CopyFile(char* filePath, char* outputName, char* buffer)
+{
+    int fileSize = 0;
+    char* data = ReadFile(filePath, &fileSize, buffer);
+
+    auto outputFile = fopen(outputName, "wb");
+    if(!outputFile)
+    {
+        CE_ERROR("Faield t oopen file: %s", outputName);
+        return false;
+    }
+
+    int result = fwrite(data, sizeof(char), fileSize, outputFile);
+    if(!result)
+    {
+        CE_ERROR("Faield writing to file: %s", outputName);
+        return false;
+    }
+
+    fclose(outputFile);
+    return true;
+}
+
+bool CopyFile(char* filePath, char* outputName, BumpAllocator* allocator)
+{
+    char* file = nullptr;
+    long fileSize = GetFileSize(filePath);
+
+    if(fileSize)
+    {
+        char* buffer = BumpAlloc(allocator, fileSize + 1);
+        return CopyFile(filePath, outputName, buffer);
+    }
+
+    return true;
+}
 }
