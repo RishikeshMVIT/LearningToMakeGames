@@ -54,6 +54,7 @@ func _physics_process(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	move_and_slide()
+	
 
 func _update_camera(delta: float) -> void:
 	_mouse_rotation.x += _pitch_input * delta

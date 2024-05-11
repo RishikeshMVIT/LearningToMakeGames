@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 
 enum TextColor
 {
@@ -115,4 +116,51 @@ char* BumpAlloc(BumpAllocator* allocator, size_t size)
     }
 
     return result;
+}
+
+long long GetTimeStamp(char* file)
+{
+    struct stat fileStat = {};
+    stat(file, &fileStat);
+    return fileStat.st_mtime;
+}
+
+bool FileExists(char* filePath)
+{
+    CE_ASSERT(filePath, "No file path");
+
+    auto file = fopen(filePath, "rb");
+    if (!file)
+        return false;
+    fclose(file);
+    return true;
+}
+
+long GetFileSize(char* filePath)
+{
+    CE_ASSERT(filePath, "No  file path");
+
+    long fileSize = 0;
+    auto file = fopen(filePath, "rb");
+    if (!file)
+    {
+        CE_ERROR("Faield to open file: %s", filePath);
+        return 0;
+    }
+
+    fseek(file, 0, SEEK_END);
+    fileSize = ftell(file);
+    fseek(file, 0, SEEK_SET);
+    fclose(file);
+
+    return fileSize;
+}
+
+char* ReadFile(char* filePath, int* fileSize, char* buffer)
+{
+    CE_ASSERT(filePath, "No file path");
+    CE_ASSERT(fileSize, "No file size");
+
+    *fileSize = 0;
+    auto file = fopen(filePath, "rb");
 }
