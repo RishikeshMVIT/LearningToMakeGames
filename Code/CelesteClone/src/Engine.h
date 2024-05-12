@@ -1,5 +1,10 @@
 #pragma once
 
+#define BIT(x) 1 << (x)
+#define KB(x) ((unsigned long long)1024 * x)
+#define MB(x) ((unsigned long long)1024 * KB(x))
+#define GB(x) ((unsigned long long)1024 * MB(x))
+
 #ifdef _WIN32
 #define DEBUG_BREAK() __debugbreak()
 #elif __linux__
@@ -147,7 +152,7 @@ long GetFileSize(char* filePath)
     auto file = fopen(filePath, "rb");
     if (!file)
     {
-        CE_ERROR("Faield to open file: %s", filePath);
+        CE_ERROR("Failed to open file: %s", filePath);
         return 0;
     }
 

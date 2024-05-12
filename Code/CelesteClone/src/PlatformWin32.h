@@ -3,7 +3,6 @@
 // Defines
 #define UNICODE
 #define NOMINMAX
-#define WIN32_LEAN_AND_MEAN
 
 // Includes
 #include <Windows.h>
@@ -24,22 +23,36 @@ static LRESULT CALLBACK OnWindowMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
 
     switch (uMsg)
     {
-    case WM_CLOSE:
-    {
-        DestroyWindow(window);
-        break;
-    }
-    case WM_DESTROY:
-    {
-        PostQuitMessage(0);
-    }
-    case WM_QUIT:
-    {
-        isRunning = false;
-    }
-    
-    default:
-        result = DefWindowProcW(hWnd, uMsg, wParam, lParam);
+        case WM_CLOSE:
+        {
+            if (MessageBox(window, L"Quit?", L"Celeste", MB_OKCANCEL))
+            {
+                DestroyWindow(window);
+            }
+            return 0;
+        }
+        case WM_DESTROY:
+        {
+            PostQuitMessage(0);
+            return 0;
+        }
+        case WM_QUIT:
+        {
+            isRunning = false;
+            break;
+        }
+
+        case WM_SIZE:
+        {
+            RECT rect = {};
+            GetClientRect(window, &rect);
+            input.screensizeX = rect.right - rect.left;
+            input.screensizeY = rect.bottom - rect.top;
+        }
+        
+        default:
+            result = DefWindowProcW(hWnd, uMsg, wParam, lParam);
+            break;
     }
 
     return result;
@@ -56,12 +69,12 @@ bool InitializeWindow(int width, int height, LPCWSTR title)
     wcex.cbClsExtra     = 0;
     wcex.cbWndExtra     = 0;
     wcex.hInstance      = hInstance;
-    wcex.hIcon          = LoadIconW(hInstance, IDI_APPLICATION);
-    wcex.hCursor        = LoadCursorW(hInstance, IDC_ARROW);
+    wcex.hIcon          = LoadIconW(hInstance, (LPCWSTR)IDI_APPLICATION);
+    wcex.hCursor        = LoadCursorW(hInstance, (LPCWSTR)IDC_ARROW);
     wcex.hbrBackground  = nullptr;
     wcex.lpszMenuName   = nullptr;
     wcex.lpszClassName  = L"Window";
-    wcex.hIconSm        = LoadIconW(hInstance, IDI_APPLICATION);
+    wcex.hIconSm        = LoadIconW(hInstance, (LPCWSTR)IDI_APPLICATION);
 
     windowClass = RegisterClassExW(&wcex);
 
@@ -157,7 +170,7 @@ bool InitializeWindow(int width, int height, LPCWSTR title)
         }
 
         wglChoosePixelFormatARB = (PFNWGLCHOOSEPIXELFORMATARBPROC) Platform::LoadGLFunction("wglChoosePixelFormatARB");
-        wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC) Platform::LoadGLFunction("wglCreateContextAttribsProc");
+        wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC) Platform::LoadGLFunction("wglCreateContextAttribsARB");
 
         if (!wglChoosePixelFormatARB || !wglCreateContextAttribsARB)
         {
@@ -282,7 +295,7 @@ void* LoadGLFunction(char* funcName)
     PROC proc = wglGetProcAddress(funcName);
     if(!proc)
     {
-        static HMODULE openglDLL = LoadLibrary(L"opengl32.dll");
+        static HMODULE openglDLL = LoadLibraryW(L"opengl32.dll");
         proc = GetProcAddress(openglDLL, funcName);
         
         if (!proc)
