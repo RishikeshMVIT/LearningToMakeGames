@@ -1,8 +1,11 @@
 #include "Renderer.h"
 
+const char* TEXTURE_PATH = "assets/textures/TextureAtlas.png";
+
 struct GLContext
 {
     GLuint program;
+    GLuint texture;
 };
 
 static GLContext glContext;
@@ -80,19 +83,43 @@ bool glInitialize(BumpAllocator* transientStorage)
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
 
+    {
+        int width, height, channels;
+        char* data = (char*)stbi_load(TEXTURE_PATH, &width, &height, &channels, 4);
+        if (!data)
+        {
+            CE_ASSERT(false, "Failed to load texture atlas");
+            return false;
+        }
+
+        glGenTextures(1, &glContext.texture);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, glContext.texture);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    }
+
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_GREATER);
+
+    glUseProgram(glContext.program);
+
+    CE_TRACE("Initialized OpenGL Shaders");
 
     return true;
 }
 
 void glRender()
 {
-    glClearColor(119.0f/255.0f, 33.0f/255.0f, 111.0f/255.0f, 1.0f);
-    //glClearDepth(0.0f);
-    glViewport(0, 0, 960, 540);
-
+    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+    glClearDepth(0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glViewport(0, 0, input.screensizeX, input.screensizeY);
 
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }

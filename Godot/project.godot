@@ -92,16 +92,16 @@ game_pausemenu={
 [layer_names]
 
 2d_physics/layer_1="Player"
+3d_physics/layer_1="Player"
 2d_physics/layer_2="Enemy"
+3d_physics/layer_2="Enemies"
 2d_physics/layer_3="Prop"
+3d_physics/layer_3="Props"
 2d_physics/layer_4="Environment"
+3d_physics/layer_4="StaticEnvironment"
 2d_physics/layer_5="Projectile"
-
-[physics]
-
-2d/run_on_separate_thread=true
-2d/physics_engine="GodotPhysics2D"
-3d/physics_engine="GodotPhysics3D"
+3d_physics/layer_5="Walls"
+3d_physics/layer_6="Floors"
 
 [rendering]
 

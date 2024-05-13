@@ -25,7 +25,11 @@ int main()
     {
         Platform::UpdateWindow();
         glRender();
+
+        Platform::SwapWindowBuffers();
     }
+
+    Platform::Shutdown();
 
     return 0;
 }

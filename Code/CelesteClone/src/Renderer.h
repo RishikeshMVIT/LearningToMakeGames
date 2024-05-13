@@ -1,6 +1,9 @@
 #pragma once
 
+#define STB_IMAGE_IMPLEMENTATION
+
 #include <GL/glcorearb.h>
+#include <STB/stb_image.h>
 
 #include "Engine.h"
 #include "Platform.h"

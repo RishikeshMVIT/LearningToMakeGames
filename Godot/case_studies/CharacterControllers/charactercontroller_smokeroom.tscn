@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://bl74i4vqyxole"]
 
 [ext_resource type="Script" path="res://case_studies/CharacterControllers/PlayerController.gd" id="2_dd6y0"]
-[ext_resource type="PackedScene" uid="uid://duh3575okhvg3" path="res://resources/prefabs/debugbox01_001.scn" id="2_mqlx7"]
+[ext_resource type="PackedScene" uid="uid://duh3575okhvg3" path="res://resources/prefabs/props/debugbox01_001.scn" id="2_mqlx7"]
 [ext_resource type="PackedScene" uid="uid://bhl3thhsye58b" path="res://resources/environment/test_environment.scn" id="3_gejps"]
 
 [sub_resource type="Environment" id="Environment_r7q8s"]
