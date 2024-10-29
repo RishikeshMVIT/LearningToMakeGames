@@ -1,7 +1,7 @@
 #!/bin/bash
 
-libs="-luser32 -lgdi32 -lopengl32"
-warnings="-Wno-writable-strings -Wno-format-security -Wno-deprecated-declarations"
-includes="-Ivendor"
+libs=-luser32
+warnings="-Wno-writable-strings -Wno-format-security"
 
-clang++ $includes -g src/Main.cpp -obin/game.exe $libs $warnings
+
+clang++ -g src/main.cpp -o bin/game.exe $libs $warnings
