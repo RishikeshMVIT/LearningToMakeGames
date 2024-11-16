@@ -1,0 +1,13 @@
+// Copyright (c) Sandbox 2024. All rights reserved
+
+using UnityEngine;
+
+    #ROOTNAMESPACEBEGIN#
+/// <summary>
+/// #NAME#
+/// </summary>
+public class #SCRIPTNAME#
+{
+	#NOTRIM#
+}
+#ROOTNAMESPACEEND#

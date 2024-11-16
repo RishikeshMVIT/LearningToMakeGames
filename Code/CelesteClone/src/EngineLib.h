@@ -127,24 +127,38 @@ char* BumpAllocate(BumpAllocator* bumpAllocator, size_t size)
 
 #pragma endregion
 
-
 #pragma region File I/O
 
-long long GetTimeStamp(char* file)
+long long GetTimeStamp(const char* file)
 {
     struct stat fileStat = {};
     stat(file, &fileStat);
     return fileStat.st_mtime;
 }
 
-long GetFileSize(char* file)
+long GetFileSize(const char* filePath)
 {
+    ENG_ASSERT(filePath, "Invalid Path");
 
-}
+    long fileSize = 0;
+    auto file = fopen(filePath, "rb");
+    if(!file)
+    {
+      ENG_ERROR("Failed to open file: %s", filePath);
+      return 0;
+    }
 
-bool FileExist(char* filePath)
+    fseek(file, 0, SEEK_END);
+    fileSize = ftell(file);
+    fseek(file, 0, SEEK_SET);
+    fclose(file);
+
+    return fileSize;
+}   
+
+bool FileExist(const char* filePath)
 {
-    ENG_ASSERT(filePath, "No file path given");
+    ENG_ASSERT(filePath, "Invalid Path");
 
     auto file = fopen(filePath, "rb");
     if (!file)
@@ -155,6 +169,100 @@ bool FileExist(char* filePath)
     fclose(file);
 }
 
+char* ReadFile(const char* filePath, int* fileSize, char* buffer)
+{
+    ENG_ASSERT(filePath, "Invalid FilePath");
+    ENG_ASSERT(fileSize, "Invalid FileSize");
+    ENG_ASSERT(buffer, "Invalid Buffer");
 
+    *fileSize = 0;
+    auto file = fopen(filePath, "rb");
+    if(!file)
+    {
+        ENG_ERROR("Failed to open file: %s", filePath);
+        return nullptr;
+    }
+
+    fseek(file, 0, SEEK_END);
+    *fileSize = ftell(file);
+    fseek(file, 0, SEEK_SET);
+
+    memset(buffer, 0, *fileSize + 1);
+    fread(buffer, sizeof(char), *fileSize, file);
+
+    fclose(file);
+
+    return buffer;
+}
+
+char* ReadFile(const char* filePath, int* fileSize, BumpAllocator* allocator)
+{
+    char* file = nullptr;
+    long fileSize2 = GetFileSize(filePath);
+
+    if(fileSize2)
+    {
+      char* buffer = BumpAllocate(allocator, fileSize2 + 1);
+
+      file = ReadFile(filePath, fileSize, buffer);
+    }
+
+    return file; 
+}
+
+void WriteFile(const char* filePath, char* buffer, int size)
+{
+    ENG_ASSERT(filePath, "Invalid Path");
+    ENG_ASSERT(buffer, "Invalid Buffer");
+
+    auto file = fopen(filePath, "wb");
+    if(!file)
+    {
+      ENG_ERROR("Failed to open file: %s", filePath);
+      return;
+    }
+
+    fwrite(buffer, sizeof(char), size, file);
+    fclose(file);
+}
+
+bool CopyFile(const char* fileName, const char* outputName, char* buffer)
+{
+    int fileSize = 0;
+    char* data = ReadFile(fileName, &fileSize, buffer);
+
+    auto outputFile = fopen(outputName, "wb");
+    if(!outputFile)
+    {
+        ENG_ERROR("Failed opening File: %s", outputName);
+        return false;
+    }
+
+    int result = fwrite(data, sizeof(char), fileSize, outputFile);
+    if(!result)
+    {
+        ENG_ERROR("Failed opening File: %s", outputName);
+        return false;
+    }
+    
+    fclose(outputFile);
+
+    return true;
+}
+
+bool CopyFile(const char* fileName, const char* outputName, BumpAllocator* allocator)
+{
+  char* file = 0;
+  long fileSize2 = GetFileSize(fileName);
+
+  if(fileSize2)
+  {
+    char* buffer = BumpAllocate(allocator, fileSize2 + 1);
+
+    return CopyFile(fileName, outputName, buffer);
+  }
+
+  return false;
+}
 
 #pragma endregion

@@ -1,4 +1,3 @@
-
 #include "EngineLib.h"
 
 #pragma region Globals

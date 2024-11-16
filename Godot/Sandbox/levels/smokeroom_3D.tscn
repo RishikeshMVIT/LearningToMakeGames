@@ -1,0 +1,372 @@
+[gd_scene load_steps=16 format=3 uid="uid://dybwvuqskgv2o"]
+
+[ext_resource type="Sky" uid="uid://bwa8tpmyqnupw" path="res://resources/skies/sample_sky.tres" id="1_m1qwf"]
+[ext_resource type="PackedScene" uid="uid://kj7pm0vas86b" path="res://player/third_person/tpc_player.tscn" id="2_k4cak"]
+[ext_resource type="Shader" path="res://resources/shaders/menu_background.gdshader" id="3_73ucw"]
+
+[sub_resource type="GDScript" id="GDScript_i7cv8"]
+script/source = "extends Node3D
+
+@export var player_scn : PackedScene
+
+@onready var canvas_layer: CanvasLayer = $UI/CanvasLayer
+
+var peer : ENetMultiplayerPeer = ENetMultiplayerPeer.new()
+
+func _on_host_button_pressed() -> void:
+	peer.create_server(8080)
+	multiplayer.multiplayer_peer = peer
+	multiplayer.peer_connected.connect(add_player)
+	add_player()
+	#canvas_layer.hide()
+	$UI/CanvasLayer/StartMenu.hide()
+
+
+func _on_join_button_pressed() -> void:
+	peer.create_client(\"127.0.0.1\", 8080)
+	multiplayer.multiplayer_peer = peer
+	#canvas_layer.hide()
+	$UI/CanvasLayer/StartMenu.hide()
+
+func add_player(id : int = 1) -> void:
+	var player = player_scn.instantiate()
+	player.name = str(id)
+	call_deferred(\"add_child\", player)
+
+func delete_player(id : int) -> void:
+	rpc(\"_delete_player\", id)
+
+@rpc(\"any_peer\", \"call_local\")
+func _delete_player(id : int) -> void:
+	get_node(str(id)).queue_free()
+
+func exit_game(id : int) -> void:
+	multiplayer.peer_disconnected.connect(delete_player)
+	delete_player(id)
+"
+
+[sub_resource type="Environment" id="Environment_otuhi"]
+background_mode = 2
+sky = ExtResource("1_m1qwf")
+ambient_light_source = 3
+
+[sub_resource type="Animation" id="Animation_wjho1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DirectionalLight3D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 1.5708, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("DirectionalLight3D:light_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.986878, 0.545214, 0.383024, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("DirectionalLight3D:light_energy")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+
+[sub_resource type="Animation" id="Animation_1am8e"]
+resource_name = "day_night_cycle"
+length = 200.0
+loop_mode = 1
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DirectionalLight3D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 100, 200),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 1.5708, 0), Vector3(-3.14159, 1.5708, 0), Vector3(-6.28319, 1.5708, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("DirectionalLight3D:light_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 20, 80, 100),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 0.631341, 0.472446, 1), Color(1, 1, 1, 1), Color(0.996078, 1, 1, 1), Color(1, 0, 0.183333, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("DirectionalLight3D:light_energy")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(100, 150, 200),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [1.0, 0.0, 0.333333]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xnryg"]
+_data = {
+"RESET": SubResource("Animation_wjho1"),
+"day_night_cycle": SubResource("Animation_1am8e")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_f038l"]
+size = Vector3(20, 1, 20)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wntqg"]
+size = Vector3(20, 1, 20)
+
+[sub_resource type="GDScript" id="GDScript_4xevy"]
+script/source = "extends Control
+
+func resume() -> void:
+	get_tree().paused = false
+	$AnimationPlayer.play_backwards(\"menu_blur\")
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+func pause() -> void:
+	get_tree().paused = true
+	$AnimationPlayer.play(\"menu_blur\")
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
+func on_esc_input() -> void:
+	if Input.is_action_just_pressed(\"ui_cancel\"):
+		if get_tree().paused:
+			resume()
+		else:
+			pause()
+
+func _on_resume_button_pressed() -> void:
+	resume()
+
+func _on_quit_button_pressed() -> void:
+	get_tree().quit()
+
+func _process(_delta: float) -> void:
+	on_esc_input()
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xfwa3"]
+shader = ExtResource("3_73ucw")
+shader_parameter/lod = 0.0
+
+[sub_resource type="Animation" id="Animation_sw1qp"]
+resource_name = "menu_blur"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:material:shader_parameter/lod")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 0.8]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PanelContainer:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_h5irh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:material:shader_parameter/lod")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PanelContainer:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3r3nv"]
+_data = {
+"RESET": SubResource("Animation_h5irh"),
+"menu_blur": SubResource("Animation_sw1qp")
+}
+
+[node name="Smokeroom" type="Node3D"]
+script = SubResource("GDScript_i7cv8")
+player_scn = ExtResource("2_k4cak")
+
+[node name="GlobalLighting" type="Node" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="GlobalLighting"]
+environment = SubResource("Environment_otuhi")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="GlobalLighting"]
+transform = Transform3D(-3.61999e-06, 0, 1, 0, 1, 0, -1, 0, -3.61999e-06, 0, 10, 0)
+light_color = Color(0.986878, 0.545214, 0.383024, 1)
+shadow_enabled = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="GlobalLighting"]
+libraries = {
+"": SubResource("AnimationLibrary_xnryg")
+}
+autoplay = "day_night_cycle"
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="Floor" type="StaticBody3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Floor"]
+shape = SubResource("BoxShape3D_f038l")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/Floor"]
+mesh = SubResource("BoxMesh_wntqg")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CanvasLayer" type="CanvasLayer" parent="UI"]
+
+[node name="PauseMenu" type="Control" parent="UI/CanvasLayer"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_4xevy")
+
+[node name="ColorRect" type="ColorRect" parent="UI/CanvasLayer/PauseMenu"]
+material = SubResource("ShaderMaterial_xfwa3")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="UI/CanvasLayer/PauseMenu"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -123.0
+offset_top = -171.0
+offset_right = 123.0
+offset_bottom = 171.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/CanvasLayer/PauseMenu/PanelContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="ResumeButton" type="Button" parent="UI/CanvasLayer/PauseMenu/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Resume"
+
+[node name="QuitButton" type="Button" parent="UI/CanvasLayer/PauseMenu/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Quit"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/CanvasLayer/PauseMenu"]
+libraries = {
+"": SubResource("AnimationLibrary_3r3nv")
+}
+
+[node name="StartMenu" type="Control" parent="UI/CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/CanvasLayer/StartMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 403.0
+offset_top = 217.0
+offset_right = 497.0
+offset_bottom = 283.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HostButton" type="Button" parent="UI/CanvasLayer/StartMenu/VBoxContainer"]
+layout_mode = 2
+text = "Host Game"
+
+[node name="JoinButton" type="Button" parent="UI/CanvasLayer/StartMenu/VBoxContainer"]
+layout_mode = 2
+text = "Join Game"
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://player/third_person/tpc_player.tscn")
+spawn_path = NodePath("..")
+
+[connection signal="pressed" from="UI/CanvasLayer/PauseMenu/PanelContainer/VBoxContainer/ResumeButton" to="UI/CanvasLayer/PauseMenu" method="_on_resume_button_pressed"]
+[connection signal="pressed" from="UI/CanvasLayer/PauseMenu/PanelContainer/VBoxContainer/QuitButton" to="UI/CanvasLayer/PauseMenu" method="_on_quit_button_pressed"]
+[connection signal="pressed" from="UI/CanvasLayer/StartMenu/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
+[connection signal="pressed" from="UI/CanvasLayer/StartMenu/VBoxContainer/JoinButton" to="." method="_on_join_button_pressed"]

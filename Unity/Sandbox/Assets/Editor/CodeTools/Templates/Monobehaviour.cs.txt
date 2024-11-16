@@ -1,0 +1,21 @@
+// Copyright (c) Sandbox 2024. All rights reserved
+
+using UnityEngine;
+
+    #ROOTNAMESPACEBEGIN#
+/// <summary>
+/// #NAME#
+/// </summary>
+public class #SCRIPTNAME# : MonoBehaviour
+{
+    void Start()
+    {
+        #NOTRIM#
+    }
+
+    void Update()
+    {
+        #NOTRIM#
+    }
+}
+#ROOTNAMESPACEEND#
