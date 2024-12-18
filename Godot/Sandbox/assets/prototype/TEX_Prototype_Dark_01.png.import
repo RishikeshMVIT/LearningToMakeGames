@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ckb60slddr4jk"
-path.s3tc="res://.godot/imported/TEX_Prototype_Orange_01.png-52ee8dd9a41673b4a0fb0aebfefdd5f2.s3tc.ctex"
+uid="uid://c78dqsn6b7dl1"
+path.s3tc="res://.godot/imported/TEX_Prototype_Dark_01.png-b37692fa3477f43149fd68cd99f3f9cf.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://import/textures/prototype/TEX_Prototype_Orange_01.png"
-dest_files=["res://.godot/imported/TEX_Prototype_Orange_01.png-52ee8dd9a41673b4a0fb0aebfefdd5f2.s3tc.ctex"]
+source_file="res://assets/prototype/TEX_Prototype_Dark_01.png"
+dest_files=["res://.godot/imported/TEX_Prototype_Dark_01.png-b37692fa3477f43149fd68cd99f3f9cf.s3tc.ctex"]
 
 [params]
 

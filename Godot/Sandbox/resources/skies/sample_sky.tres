@@ -1,7 +1,0 @@
-[gd_resource type="Sky" load_steps=2 format=3 uid="uid://bwa8tpmyqnupw"]
-
-[ext_resource type="Material" uid="uid://ou5b7ubx8v4h" path="res://resources/materials/sky_materials/sample_sky.material" id="1_3u10r"]
-
-[resource]
-sky_material = ExtResource("1_3u10r")
-radiance_size = 1
